@@ -8,7 +8,7 @@ W = L; % width size
 NR = (2*W-1)*L; % number of links (without entrance)
 NN = W*L; % number of nodes
 epsilon = 10^(-5); % threshold for epsilon to determine that the system converged
-gamma = 0.1*10^9; % gamma describes the relationship between heat and temperature in a system, depending on the medium
+gamma = 2.5*10^9; % gamma describes the relationship between heat and temperature in a system, depending on the medium
 Rhot = 500; % the resistance in the Normal phase
 RSc = 10^(-5); % the resistance in the SC (Super-Conducting) phase
 Ic0 = 58*10^(-6); % avg critical current
@@ -16,9 +16,9 @@ sigma = 0.1; % variance of the criticality of the system resistors
 Dt = 1000; % Dt sets the level of heat diffusion
 T0 = 2; %fixed hea-bath temperature
 lower = 1; % (1) for lowering the current each step (0) for increasing
-Ii = 1; % lowest current
-If =1.2; % highet current
-Ijumps = 50;
+Ii = 10; % lowest current
+If = 300; % highet current
+Ijumps = 1000;
 plateau_vec = nan;
 
 I_vec = linspace(Ii,If,Ijumps)*10^(-6);
@@ -139,6 +139,7 @@ for p = 1:length(plateau_vec)
             Q = heat_transfer_spectral(L,W,Dt,heat(1:NR-W)*gamma);
             heat(1:NR-W) = Q;
 
+            %Updates the states and resistance of the resistors following the updated temperature
             [R , Rin, states ,states_in] = update_resistors_SC(NR, W, R, Rin, heat, heat_in, Ic, Ic_in, Tc, Tcin, Rhot, RSc, currents, cin,T0, states ,states_in);
 
             iter_per_I = [iter_per_I iter];
@@ -162,11 +163,6 @@ for p = 1:length(plateau_vec)
         plateau_structor(p).iter = iter_per_I;
         plateau_structor(p).R = R_per_I;
     end
-end
-
-% finish movie
-if movie_flag
-    close(v);
 end
 
 if lower
