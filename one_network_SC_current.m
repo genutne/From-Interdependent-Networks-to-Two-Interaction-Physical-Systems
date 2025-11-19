@@ -14,7 +14,7 @@ RSc = 10^(-5); % the resistance in the SC (Super-Conducting) phase
 Ic0 = 58*10^(-6); % avg critical current
 sigma = 0.1; % variance of the criticality of the system resistors
 Dt = 1000; % Dt sets the level of heat diffusion
-T0 = 2; %fixed hea-bath temperature
+T0 = 2; %fixed heat-bath temperature
 lower = 1; % (1) for lowering the current each step (0) for increasing
 Ii = 10; % lowest current
 If = 300; % highet current
@@ -201,3 +201,4 @@ else
     filename = [PT_direction ,'_sigma' ,num2str(sigma),'T' ,num2str(T0),'Dt', num2str(Dt), 'L',num2str(L), 'k',num2str(gamma), '_onelayer.mat'];
     save(filename, 'I_vec','R_all','iterations');
 end
+
