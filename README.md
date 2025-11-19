@@ -1,6 +1,6 @@
 # From-Interdependent-Networks-to-Two-Interaction-Physical-Systems
 
-The folder "MATLAB code" contains the code needed to track the resistance changes over time of a network with constant temperature and different currents (one_network_SC_temperature.m), and with constant current and different temperatures (one_network_SC_current.m). This allows us to observe an abrupt transition when the system reaches a steady state and to capture the plateau behavior during the transition. In the absence of a Matlab license, one can use Octave as a compatible program to run the code. The main codes are in the files "one_network_SC_temperature/current.m".
+This folder contains the code needed to track the resistance changes over time of a network with constant temperature and different currents (one_network_SC_temperature.m), and with constant current and different temperatures (one_network_SC_current.m). This allows us to observe an abrupt transition when the system reaches a steady state and to capture the plateau behavior during the transition. In the absence of a Matlab license, one can use Octave as a compatible program to run the code. The main codes are in the files "one_network_SC_temperature/current.m".
 
 The simulation process and function follow these steps:
 
