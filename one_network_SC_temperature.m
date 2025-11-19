@@ -9,17 +9,17 @@ W = L; % width size
 NR = (2*W-1)*L; % number of links (without entrance)
 NN = W*L; % number of nodes
 epsilon = 10^(-5); % threshold for epsilon to determine that the system converged
-gamma = 0.1*10^9; %gamma describes the relationship between heat and temperature in a system, depending on the medium
+gamma = 2.5*10^9; %gamma describes the relationship between heat and temperature in a system, depending on the medium
 Rhot = 500; % the resistance in the Normal phase
 RSc = 10^(-5); % the resistance in the SC (Super-Conducting) phase
 Ic0 = 58*10^(-6); % avg critical current
 sigma = 0.1; % variance of the criticality of the system resistors
 Dt = 1000; % Dt sets the level of heat diffusion. Dt~L^2 = mean-filed aproximation
-Itotal = 400*10^(-6); % fixed current through the system
-Ti = 0.1; % lowest temperature
-Tf = 3; % highest temperature
-Tjumps = 1000;  
-heat = 0; % chose 0 for cooling the system and 1 for heating.
+Itotal = 70*10^(-6); % fixed current through the system
+Ti = 1.5; % lowest temperature
+Tf = 4; % highest temperature
+Tjumps = 50;  
+heating = 1; % chose 0 for cooling the system and 1 for heating.
 plateau_vec = nan;
 
 %if a plateau mesurment wanted, as Tc is known, activate the lines:
@@ -52,10 +52,10 @@ for p = 1:length(plateau_vec)
     cin = zeros(1,W); % vector currents for each link
     currents = zeros(1,NR);
 
-    if heat % vector resistors for each link
+    if heating % vector resistors for each link
         Rin = RSc*ones(1,W);
         R = RSc*ones(1,NR);
-    elseif ~heat
+    elseif ~heating
         Rin = Rhot*ones(1,W);
         R = Rhot*ones(1,NR);
     end
@@ -73,17 +73,18 @@ for p = 1:length(plateau_vec)
 
     %temperature properties
     T_range = linspace(Ti,Tf,Tjumps);
-    if ~heat
-        flip(T_range);
+    if ~heating
+        T_range = flip(T_range);
     end
     if plateau %for plateau
-        if heat
+        if heating
             T_range = [Ti plateau_vec(p)]; 
-        elseif ~heat
+        elseif ~heating
             T_range = [Tf plateau_vec(p)];
         end
     end
     R_all = zeros(1,length(T_range));
+    iterations = zeros(1,length(T_range));
 
     for i=1:length(T_range)
 
@@ -146,6 +147,7 @@ for p = 1:length(plateau_vec)
 
         %%%% resistence
         R_all(i) = V(end)/Itotal;
+        iterations(i) = iter;
         [T0 R_all(i) iter] %true-time-state
     end
 
@@ -156,9 +158,9 @@ for p = 1:length(plateau_vec)
     end
 end
 
-if heat
+if heating
     description ='heating';
-elseif ~heat
+elseif ~heating
     description ='cooling';
 end
 
